@@ -139,7 +139,7 @@ ol.algorithm li:before {
     <section class="informative">
       <h2>Introduction</h2>
       <p>
-        In its majority, businesses already implement some known revocation 
+        In the majority of cases, businesses already implement some known revocation 
         approaches for particular business cases.
         <br>
         <br>
@@ -148,7 +148,7 @@ ol.algorithm li:before {
         <a href='https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol'>Lightweight Directory Access Protocol (LDAP)<a>.
         <br>
         <br>
-        So that an <a>issuer</a> of <a>verifiable credential</a>
+        An <a>issuer</a> of <a>verifiable credentials</a> in such a system
         [[VC-DATA-MODEL]] can use a pointer to a particular location at 
         <a>directory service</a> inside of <a>verifiable credential</a>, that 
         a <a>verifier</a> can check to see if a credential has been revoked. 
@@ -168,18 +168,18 @@ ol.algorithm li:before {
     <section class="informative">
       <h2>Process Flow</h2>
 
-        Here we describe the mechanism that employs an underlying <a>directory 
-        service</a> and leverages <a>LDAP</a> to obtain records of revocation 
-        status change for <a>verifiable credentials</a>
+        Here we describe the assumptions in this usage of an underlying <a>directory 
+        service</a>, which leverages <a>LDAP</a> to obtain records of revocation 
+        status changes for a given <a>verifiable credential</a>.
         <br>
         <br>
         First of all, <a>verifiable credentials</a> issued by an <a>issuer</a> 
-        are not being recorded in <a>directory service</a> be default. 
+        are not being recorded in <a>directory service</a> by default. 
         <br>
         <br>
-        And in case of its revocation - a respective record becomes publicly 
-        accessible via LDAP URL mentioned at <a>credentialStatus.id</a> property of 
-        <a>verifiable credential</a>. Thereafter, <a>verifiable credential</a> 
+        In the case of its revocation, a respective record becomes publicly 
+        accessible via LDAP URL mentioned in the <a>credentialStatus.id</a> property of 
+        the <a>verifiable credential</a>. Thereafter, this <a>verifiable credential</a> 
         should be considered as revoked.
 
     </section>
@@ -215,7 +215,9 @@ ol.algorithm li:before {
                 in the Verifiable Credentials Data Model specification 
                 [[VC-DATA-MODEL]]. The value is expected to be a URL that 
                 identifies the status information associated with the 
-                <a>verifiable credential</a>. It MUST be the LDAP URL.
+                <a>verifiable credential</a>. It MUST be the LDAP URL
+                that points directly to the status of that specific
+                credential.
               </td>
             </tr>
             <tr>
@@ -264,31 +266,34 @@ ol.algorithm li:before {
       <h3>Revocation Algorithm</h3>
 
       <p>
-        This process MUST be followed to produce revocation status change for 
+        This process MUST be followed to produce revocation status change for each
         <a>verifiable credential</a> that includes <a>RevocationStatus2021-LDAP</a>
-        method as value for its <a>credentialStatus.type</a> property, therefore 
-        it relies on underlying <a>directory service</a>.
+        method as value for its <a>credentialStatus.type</a> property, and thus 
+        relies on an underlying <a>directory service</a> to store revocation 
+        information.
       </p>
 
       <ol class="algorithm">
         <li>
           Define a fully qualified URL to a resource at <a>directory service</a> 
-          that aims to reflect revocation status change for <a>verifiable credential</a>
+          that resolves to a string explaining the revocation status for the
+          <a>verifiable credential</a> in question.
           <br>
-          <br>One of URL query param value MAY include the value of <a>id</a> property of 
-          <a>verifiable credential</a>
+          <br>One URL query param value MAY include the value of <a>id</a> property of 
+          the relevant <a>verifiable credential</a>.
           <br>
-          <br>The other of URL query param values MAY include the some of strings taken from 
-          the value of <a>type</a> property of <a>verifiable credential</a>.
+          <br>The other of URL query param values MAY include one of the strings from
+          the <a>type</a> property array specifying the schema against which to 
+          interpret a given <a>verifiable credential</a>.
         </li>
         <li>
           Create a resource at chosen location.
           <br>
-          <br>The resource MUST include <a>description</a> property.
+          <br>The resource MUST include a <a>description</a> property.
           <br>The value of <a>description</a> property MUST be a string.
-          <br>The resource MAY include <a>date</a> property
-          <br>The value of <a>date</a> property MUST be ISO string or UNIX timestamp 
-          number in milliseconds. ISO string format is suggested due to its readability.
+          <br>The resource MAY also include a <a>date</a> property.
+          <br>The value of the <a>date</a> property MUST be ISO string or UNIX timestamp 
+          in milliseconds. ISO string format is suggested due to its readability.
         </li>
       </ol>
     </section>
@@ -299,14 +304,14 @@ ol.algorithm li:before {
       <p>
         This process MUST be followed to identify revocation status of 
         <a>verifiable credential</a> that includes <a>RevocationStatus2021-LDAP</a>
-        method as value for its <a>credentialStatus.type</a> property, therefore 
-        it relies on underlying <a>directory service</a>.
+        method as value for its <a>credentialStatus.type</a> property. This 
+        identifies it as relying on underlying LDAP <a>directory service</a>.
       </p>
 
       <ol class="algorithm">
         <li>
-          Try to perform LDAP search using LDAP URL value from 
-          <a>credentialStatus.id</a> property of <a>verifiable credential</a>
+          Try to perform LDAP search using LDAP URL value from the
+          <a>credentialStatus.id</a> property of a <a>verifiable credential</a>
         </li>
         <li>
           In case LDAP search throws an error code <a>32</a> (not found), 
@@ -345,8 +350,8 @@ ol.algorithm li:before {
         privacy of <a>holders</a> by reducing or eliminating requests for the
         revocation lists from the <a>issuer</a>. Often, a request for a revocation
         list will be served by an edge device and thus be faster and reduce the load
-        on the server as well as cloaking <a>verifiers</a> and <a>holders</a>
-        from <a>issuers</a>.
+        on the server as well as cloaking <a>verifier</a> and <a>holder</a>
+        traffic from <a>issuers</a>.
       </p>
     </section>
 
@@ -370,7 +375,7 @@ ol.algorithm li:before {
     </p>
 
     <p class="issue">
-      Write security considerations.
+      <b>TODO: Write security considerations.</b>
     </p>
 
   </section>
