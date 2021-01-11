@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Revocation Status 2021 LDAP</title>
+    <meta http-equiv='Content-Type' content='text/html;charset=utf-8'/>
+    <!--
+      === NOTA BENE ===
+      For the three scripts below, if your spec resides on dev.w3 you can check them
+      out in the same tree and use relative links so that they'll work offline,
+     -->
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
+    <script src="./common.js" class="remove"></script>
+    <script type="text/javascript" class="remove">
+      var respecConfig = {
+        // specification status (e.g., WD, LCWD, NOTE, etc.). If in doubt use ED.
+        specStatus: "CG-DRAFT",
+
+        // the specification's short name, as in http://www.w3.org/TR/short-name/
+        shortName: "vc-status-2021-ldap",
+
+        // subtitle for the spec
+        subtitle: "Directory service (LDAP) based mechanism for revoking Verifiable Credentials",
+
+        // if you wish the publication date to be other than today, set this
+        //publishDate: "2019-03-26",
+        //crEnd: "2019-04-23",
+        //implementationReportURI: "https://w3c.github.io/sdh-test-suite",
+        previousMaturity: "UNOFFICIAL",
+        // previousPublishDate: "2020-01-11",
+
+        // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
+        // and its maturity status
+        // previousPublishDate:  "1977-03-15",
+        // previousMaturity:  "WD",
+
+        // extend the bibliography entries
+        localBiblio: ccg.localBiblio,
+        doJsonLd: true,
+
+        github: "https://github.com/spherity/vc-status-2021-ldap/",
+        includePermalinks: false,
+
+        // if there a publicly available Editor's Draft, this is the link
+        edDraftURI: "https://spherity.github.io/vc-status-2021-ldap/",
+
+        // if this is a LCWD, uncomment and set the end of its review period
+        // lcEnd: "2009-08-05",
+
+        // editors, add as many as you like
+        // only "name" is required
+        editors: [
+          { name: "Alexander Yenkalov", url: "https://github.com/AlexYenkalov",
+            company: "Spherity", companyURL: "http://spherity.com/"},
+          { name: "Andrey Orlov", url: "https://www.linkedin.com/in/andrey-orlov/",
+            company: "Spherity", companyURL: "https://spherity.com/"}
+        ],
+        // authors, add as many as you like.
+        // This is optional, uncomment if you have authors as well as editors.
+        // only "name" is required. Same format as editors.
+        authors:
+        [
+          { name: "Alexander Yenkalov", url: "https://github.com/AlexYenkalov",
+            company: "Spherity", companyURL: "http://spherity.com/"},
+          { name: "Andrey Orlov", url: "https://www.linkedin.com/in/andrey-orlov/",
+            company: "Spherity", companyURL: "https://spherity.com/"}
+        ],
+        // name of the WG
+        wg:           "Credentials Community Group",
+
+        // URI of the public WG page
+        wgURI:        "https://www.w3.org/community/credentials/",
+
+        // name (with the @w3c.org) of the public mailing to which comments are due
+        wgPublicList: "public-credentials",
+
+        // URI of the patent status for this WG, for Rec-track documents
+        // !!!! IMPORTANT !!!!
+        // This is important for Rec-track documents, do not copy a patent URI from a random
+        // document unless you know what you're doing. If in doubt ask your friendly neighborhood
+        // Team Contact.
+        //wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/98922/status",
+        maxTocLevel: 2,
+        inlineCSS: true
+      };
+    </script>
+    <style>
+pre .highlight {
+  font-weight: bold;
+  color: green;
+}
+pre .comment {
+  font-weight: bold;
+  color: Gray;
+}
+.color-text {
+  font-weight: bold;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+ol.algorithm {
+  counter-reset: numsection;
+  list-style-type: none;
+}
+ol.algorithm li {
+  margin: 0.5em 0;
+}
+ol.algorithm li:before {
+  font-weight: bold;
+  counter-increment: numsection;
+  content: counters(numsection, ".") ") ";
+}
+    </style>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>
+        This specification describes a mechanism for publishing the revocation 
+        status of Verifiable Credentials that leverages directory service 
+        (e.g. Active Directory), where respective records are publicly 
+        accessible via LDAP.
+      </p>
+    </section>
+
+    <section id='sotd'>
+      <p>
+This document is experimental and is undergoing heavy development.
+It is inadvisable to implement the specification in its current form.
+An
+<a href="https://github.com/spherity/vc-status-2021-ldap">experimental
+implementation</a> is available.
+      </p>
+      <p>
+        Comments regarding all aspects of this document are welcome.
+        Please file issues directly on 
+        <a href="https://github.com/spherity/vc-status-2021-ldap/issues/">GitHub</a>
+    </p>
+
+    </section>
+
+    <section class="informative">
+      <h2>Introduction</h2>
+      <p>
+        In its majority, businesses already implement some known revocation 
+        approaches for particular business cases.
+        <br>
+        <br>
+        One of these "known" options is the usage of directory services such 
+        as Active Directly that provides the access to records via 
+        <a>Lightweight Directory Access Protocol (LDAP)<a>.
+        <br>
+        <br>
+        So that an <a>issuer</a> of <a>verifiable credential</a>
+        [[VC-DATA-MODEL]] can use a pointer to a particular location at 
+        <a>directory service</a> inside of <a>verifiable credential</a>, that 
+        a <a>verifier</a> can check to see if a credential has been revoked. 
+      </p>
+    </section>
+
+    <section id="conformance" class="normative">
+    </section>
+
+    <section class="informative">
+      <h2>Terminology</h2>
+
+      <div
+        data-include="./terms.html" data-oninclude="restrictReferences"></div>
+    </section>
+
+    <section class="informative">
+      <h2>Process Flow</h2>
+
+        Here we describe the mechanism that employs an underlying <a>directory 
+        service</a> and leverages <a>LDAP</a> to obtain records of revocation 
+        status change for <a>verifiable credentials</a>
+        <br>
+        <br>
+        First of all, <a>verifiable credentials</a> issued by an <a>issuer</a> 
+        are not being recorded in <a>directory service</a> be default. 
+        <br>
+        <br>
+        And in case of its revocation - a respective record becomes publicly 
+        accessible via LDAP URL mentioned at <a>credentialStatus.id</a> field of 
+        <a>verifiable credential</a>. Thereafter, <a>verifiable credential</a> 
+        should be considered as revoked.
+
+    </section>
+
+    <section class="normative">
+      <h2>Data Model</h2>
+
+      <p>
+        The following sections outlines the data model for this document.
+      </p>
+
+      <section>
+        <h3>RevocationStatus2021-LDAP</h3>
+
+        <p>
+          When an <a>issuer</a> desires to enable revocation for a
+          <a>verifiable credential</a>, they MAY add a <code>status</code> 
+          property that uses the data model described in this specification.
+        </p>
+
+        <table class="simple">
+          <thead>
+            <tr>
+              <th style="white-space: nowrap">Property</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>id</td>
+              <td>
+                The constraints on the <code>id</code> property are listed 
+                in the Verifiable Credentials Data Model specification 
+                [[VC-DATA-MODEL]]. The value is expected to be a URL that 
+                identifies the status information associated with the 
+                <a>verifiable credential</a>. It MUST be the LDAP URL.
+              </td>
+            </tr>
+            <tr>
+              <td>type</td>
+              <td>
+                The <code>type</code> property MUST be 
+                <code>RevocationStatus2021-LDAP</code>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <pre class="example nohighlight" title="Example RevocationStatus2021-LDAP">
+          {
+            "@context": [
+              "https://www.w3.org/2018/credentials/v1"
+            ],
+            "id": "https://example.com/credentials/23894672367",
+            "type": ["VerifiableCredential"],
+            "issuer": "did:example:12345",
+            "issued": "2021-01-11T00:35:00Z",
+            <span class="highlight">"credentialStatus": {
+              "id": "ldaps://ds.example.com:636/o=https://example.com/credentials/23894672367,cn=CRL,ou=unit,dc=example,dc=com",
+              "type": "RevocationStatus2021-LDAP"
+            }</span>,
+            "credentialSubject": {
+              "id": "did:example:6789",
+              "type": "Person"
+            },
+            "proof": { <span class="comment">...</span> }
+          }
+        </pre>
+      </section>
+
+    </section>
+
+  <section class="normative">
+    <h2>Algorithms</h2>
+
+    <p>
+      The following section outlines the algorithms that are used to revoke
+      and validate revocation status as described by this document.
+    </p>
+
+    <section class="normative">
+      <h3>Revocation Algorithm</h3>
+
+      <p>
+        This process MUST be followed to produce revocation status change for 
+        <a>verifiable credential</a> that includes <a>RevocationStatus2021-LDAP</a>
+        method as value for its <a>credentialStatus.type</a> property, therefore 
+        replies on underlying <a>directory service</a>.
+      </p>
+
+      <ol class="algorithm">
+        <li>
+          Define a fully qualified URL to a resource at <a>directory service</a> 
+          that aims to reflect revocation status change for <a>verifiable credential</a>
+          <br>
+          <br>
+          One of URL query param value MAY include the value of <a>id</a> property of 
+          <a>verifiable credential</a>
+          <br>
+          The other of URL query param values MAY include the one of strings taken from 
+          the value <a>type</a> property of <a>verifiable credential</a>.
+        </li>
+        <li>
+          Create a resource at chosen location.
+          <br>The resource MUST include <a>description</a> property.
+          <br>The resource MAY include <a>date</a> property, where its value MUST be a 
+          datetime expressed either as ISO string or UNIX timestamp number in milliseconds.
+          ISO string format is suggested due to its readability.
+        </li>
+      </ol>
+    </section>
+
+    <section class="normative">
+      <h3>Validation Algorithm</h3>
+
+      <p>
+        This process MUST be followed to identify revocation status of 
+        <a>verifiable credential</a> that includes <a>RevocationStatus2021-LDAP</a>
+        method as value for its <a>credentialStatus.type</a> property, therefore 
+        replies on underlying <a>directory service</a>.
+      </p>
+
+      <ol class="algorithm">
+        <li>
+          Try to perform LDAP search using LDAP URL value from 
+          <a>credentialStatus.id</a> property of <a>verifiable credential</a>
+        </li>
+        <li>
+          In case LDAP search throws an error code <a>32</a>, then outlined 
+          resource is not found, that  means <a>verifiable credential</a> 
+          is not revoked yet.
+          <br>
+          In case LDAP search returns search results, then at least of record 
+          is found, that means <a>verifiable credential</a> is revoked.
+          <br>
+          In case LDAP search results includes records, each record MAY 
+          include <a>description</a> property, that if provided MUST be
+          a string.
+          <br>
+          In case LDAP search results includes at records, each record MAY 
+          include <a>date</a> property, that if provided MUST include 
+          a datetime expressed either as ISO string or UNIX timestamp number 
+          in milliseconds.
+        </li>
+      </ol>
+    </section>
+
+  </section>
+
+  <section class="informative">
+    <h2>Privacy Considerations</h2>
+
+    <p>
+      This section details the general privacy considerations and specific privacy
+      implications of deploying this specification into production environments.
+    </p>
+
+    <section class="informative">
+      <h3>Content Distribution Networks</h3>
+
+      <p>
+        The use of content distribution networks by <a>issuers</a> can increase the
+        privacy of <a>holders</a> by reducing or eliminating requests for the
+        revocation lists from the <a>issuer</a>. Often, a request for a revocation
+        list will be served by an edge device and thus be faster and reduce the load
+        on the server as well as cloaking <a>verifiers</a> and <a>holders</a>
+        from <a>issuers</a>.
+      </p>
+    </section>
+
+  </section>
+
+  <section class="informative">
+    <h2>Security Considerations</h2>
+
+    <p>
+      There are a number of security considerations that implementers should be
+      aware of when processing data described by this specification. Ignoring or
+      not understanding the implications of this section can result in
+      security vulnerabilities.
+    </p>
+
+    <p>
+      While this section attempts to highlight a broad set of security
+      considerations, it is not a complete list. Implementers are urged to seek the
+      advice of security and cryptography professionals when implementing mission
+      critical systems using the technology outlined in this specification.
+    </p>
+
+    <p class="issue">
+      Write security considerations.
+    </p>
+
+  </section>
+
+  <section class="informative">
+    <h2>Accessibility Considerations</h2>
+
+    <p>
+      There are a number of accessibility considerations implementers should be
+      aware of when processing data described in this specification. As with any web
+      standards or protocols implementation, ignoring accessibility issues makes
+      this information unusable to a large subset of the population. It is important
+      to follow accessibility guidelines and standards, such as [[WCAG21]], to ensure
+      all people, regardless of ability, can make use of this data. This is
+      especially important when establishing systems utilizing cryptography, which
+      have historically created problems for assistive technologies.
+    </p>
+
+    <p>
+      This section details the general accessibility considerations to take into
+      account when utilizing this data model.
+    </p>
+
+    <p class="issue">
+      Write accessibility considerations.
+    </p>
+
+  </section>
+
+  <section class="informative">
+    <h2>Internationalization Considerations</h2>
+
+    <p>
+      There are a number of internationalization considerations implementers should be
+      aware of when publishing data described in this specification. As with any web
+      standards or protocols implementation, ignoring internationalization makes it
+      difficult for data to be produced and consumed across a disparate set of
+      languages and societies, which would limit the applicability of the
+      specification and significantly diminish its value as a standard.
+    </p>
+
+    <p>
+      This section outlines general internationalization considerations to take into
+      account when utilizing this data model.
+    </p>
+
+    <p class="issue">
+      Write i18n considerations.
+    </p>
+
+  </section>
+
+  </body>
+</html>
