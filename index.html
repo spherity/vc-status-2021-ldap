@@ -51,7 +51,7 @@
         editors: [
           { name: "Alexander Yenkalov", url: "https://github.com/AlexYenkalov",
             company: "Spherity", companyURL: "http://spherity.com/"},
-          { name: "Andrey Orlov", url: "https://www.linkedin.com/in/andrey-orlov/",
+          { name: "Andrey Orlov", url: "https://github.com/aaorlov",
             company: "Spherity", companyURL: "https://spherity.com/"}
         ],
         // authors, add as many as you like.
@@ -61,7 +61,7 @@
         [
           { name: "Alexander Yenkalov", url: "https://github.com/AlexYenkalov",
             company: "Spherity", companyURL: "http://spherity.com/"},
-          { name: "Andrey Orlov", url: "https://www.linkedin.com/in/andrey-orlov/",
+          { name: "Andrey Orlov", url: "https://github.com/aaorlov",
             company: "Spherity", companyURL: "https://spherity.com/"}
         ],
         // name of the WG
@@ -122,11 +122,11 @@ ol.algorithm li:before {
 
     <section id='sotd'>
       <p>
-This document is experimental and is undergoing heavy development.
-It is inadvisable to implement the specification in its current form.
-An
-<a href="https://github.com/spherity/vc-status-2021-ldap">experimental
-implementation</a> is available.
+        This document is experimental and is undergoing heavy development.
+        It is inadvisable to implement the specification in its current form.
+        An
+        <a href="https://github.com/spherity/vc-status-2021-ldap">experimental
+        implementation</a> is available.
       </p>
       <p>
         Comments regarding all aspects of this document are welcome.
@@ -144,8 +144,8 @@ implementation</a> is available.
         <br>
         <br>
         One of these "known" options is the usage of directory services such 
-        as Active Directly that provides the access to records via 
-        <a>Lightweight Directory Access Protocol (LDAP)<a>.
+        as Active Directory that provides the access to records via 
+        <a href='https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol'>Lightweight Directory Access Protocol (LDAP)<a>.
         <br>
         <br>
         So that an <a>issuer</a> of <a>verifiable credential</a>
@@ -178,7 +178,7 @@ implementation</a> is available.
         <br>
         <br>
         And in case of its revocation - a respective record becomes publicly 
-        accessible via LDAP URL mentioned at <a>credentialStatus.id</a> field of 
+        accessible via LDAP URL mentioned at <a>credentialStatus.id</a> property of 
         <a>verifiable credential</a>. Thereafter, <a>verifiable credential</a> 
         should be considered as revoked.
 
@@ -267,7 +267,7 @@ implementation</a> is available.
         This process MUST be followed to produce revocation status change for 
         <a>verifiable credential</a> that includes <a>RevocationStatus2021-LDAP</a>
         method as value for its <a>credentialStatus.type</a> property, therefore 
-        replies on underlying <a>directory service</a>.
+        it relies on underlying <a>directory service</a>.
       </p>
 
       <ol class="algorithm">
@@ -275,19 +275,20 @@ implementation</a> is available.
           Define a fully qualified URL to a resource at <a>directory service</a> 
           that aims to reflect revocation status change for <a>verifiable credential</a>
           <br>
-          <br>
-          One of URL query param value MAY include the value of <a>id</a> property of 
+          <br>One of URL query param value MAY include the value of <a>id</a> property of 
           <a>verifiable credential</a>
           <br>
-          The other of URL query param values MAY include the one of strings taken from 
-          the value <a>type</a> property of <a>verifiable credential</a>.
+          <br>The other of URL query param values MAY include the some of strings taken from 
+          the value of <a>type</a> property of <a>verifiable credential</a>.
         </li>
         <li>
           Create a resource at chosen location.
+          <br>
           <br>The resource MUST include <a>description</a> property.
-          <br>The resource MAY include <a>date</a> property, where its value MUST be a 
-          datetime expressed either as ISO string or UNIX timestamp number in milliseconds.
-          ISO string format is suggested due to its readability.
+          <br>The value of <a>description</a> property MUST be a string.
+          <br>The resource MAY include <a>date</a> property
+          <br>The value of <a>date</a> property MUST be ISO string or UNIX timestamp 
+          number in milliseconds. ISO string format is suggested due to its readability.
         </li>
       </ol>
     </section>
@@ -299,7 +300,7 @@ implementation</a> is available.
         This process MUST be followed to identify revocation status of 
         <a>verifiable credential</a> that includes <a>RevocationStatus2021-LDAP</a>
         method as value for its <a>credentialStatus.type</a> property, therefore 
-        replies on underlying <a>directory service</a>.
+        it relies on underlying <a>directory service</a>.
       </p>
 
       <ol class="algorithm">
@@ -308,21 +309,20 @@ implementation</a> is available.
           <a>credentialStatus.id</a> property of <a>verifiable credential</a>
         </li>
         <li>
-          In case LDAP search throws an error code <a>32</a>, then outlined 
-          resource is not found, that  means <a>verifiable credential</a> 
-          is not revoked yet.
+          In case LDAP search throws an error code <a>32</a> (not found), 
+          then <a>verifiable credential</a> is not revoked yet.
           <br>
-          In case LDAP search returns search results, then at least of record 
-          is found, that means <a>verifiable credential</a> is revoked.
+          <br>In case LDAP search returns search results, then
+          <a>verifiable credential</a> is revoked.
           <br>
-          In case LDAP search results includes records, each record MAY 
+          <br>In case LDAP search results includes records, each record MUST 
           include <a>description</a> property, that if provided MUST be
           a string.
           <br>
-          In case LDAP search results includes at records, each record MAY 
-          include <a>date</a> property, that if provided MUST include 
-          a datetime expressed either as ISO string or UNIX timestamp number 
-          in milliseconds.
+          <br>In case LDAP search results includes records, each record MAY 
+          include <a>date</a> property.
+          <br>The value <a>date</a> property MUST be ISO string or UNIX timestamp 
+          number in milliseconds.
         </li>
       </ol>
     </section>
