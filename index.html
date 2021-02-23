@@ -178,9 +178,11 @@ ol.algorithm li:before {
         <br>
         <br>
         In the case of its revocation, a respective record becomes publicly 
-        accessible via LDAP URL mentioned in the <a>credentialStatus.id</a> property of 
-        the <a>verifiable credential</a>. Thereafter, this <a>verifiable credential</a> 
-        should be considered as revoked.
+        accessible via LDAP URL that should be securely constructed via 
+        <a>credentialStatus.protocol</a>, <a>credentialStatus.host</a>, 
+        <a>credentialStatus.query</a>, <a>credentialStatus.params</a> 
+        properties of the <a>verifiable credential</a>. Thereafter, this 
+        <a>verifiable credential</a> should be considered as revoked.
 
     </section>
 
@@ -192,7 +194,7 @@ ol.algorithm li:before {
       </p>
 
       <section>
-        <h3>RevocationStatus2021-LDAP</h3>
+        <h3>RevocationStatus2021LDAP</h3>
 
         <p>
           When an <a>issuer</a> desires to enable revocation for a
@@ -213,24 +215,50 @@ ol.algorithm li:before {
               <td>
                 The constraints on the <code>id</code> property are listed 
                 in the Verifiable Credentials Data Model specification 
-                [[VC-DATA-MODEL]]. The value is expected to be a URL that 
-                identifies the status information associated with the 
-                <a>verifiable credential</a>. It MUST be the LDAP URL
-                that points directly to the status of that specific
-                credential.
+                [[VC-DATA-MODEL]]. The value is expected to be an LDAP URL
+                that MUST NOT be used to identify the status information 
+                associated with the <a>verifiable credential</a>.
               </td>
             </tr>
             <tr>
               <td>type</td>
               <td>
                 The <code>type</code> property MUST be 
-                <code>RevocationStatus2021-LDAP</code>.
+                <code>RevocationStatus2021LDAP</code>.
+              </td>
+            </tr>
+            <tr>
+              <td>protocol</td>
+              <td>
+                The value is expected to be a valid LDAP protocol.
+              </td>
+            </tr>
+            <tr>
+              <td>host</td>
+              <td>
+                The value is expected to be a valid LDAP host:port.
+              </td>
+            </tr>
+            <tr>
+              <td>query</td>
+              <td>
+                The value is expected to be a search query for the 
+                <a>verifiable credential</a> location. Numbers that 
+                are present inside brackets identify indexes of 
+                respective values from <a>credentialStatus.params</a> array.
+              </td>
+            </tr>
+            <tr>
+              <td>params</td>
+              <td>
+                The value is expected to be input params for 
+                <a>credentialStatus.params</a> query.
               </td>
             </tr>
           </tbody>
         </table>
 
-        <pre class="example nohighlight" title="Example RevocationStatus2021-LDAP">
+        <pre class="example nohighlight" title="Example RevocationStatus2021LDAP">
           {
             "@context": [
               "https://www.w3.org/2018/credentials/v1"
@@ -241,7 +269,17 @@ ol.algorithm li:before {
             "issued": "2021-01-11T00:35:00Z",
             <span class="highlight">"credentialStatus": {
               "id": "ldaps://ds.example.com:636/o=https://example.com/credentials/23894672367,cn=CRL,ou=unit,dc=example,dc=com",
-              "type": "RevocationStatus2021-LDAP"
+              "type": "RevocationStatus2021LDAP",
+              "protocol": "ldaps",
+              "host": "162.242.203.212:636",
+              "query": "o={{0}},cn={{1}},ou={{2}},dc={{3}},dc={{4}}",
+              "params": [
+                "urn:uuid:b80034b6-fb87-4291-8fa7-f8ce2f62749b",
+                "CRL 1",
+                "Credential Type",
+                "company name",
+                "com"
+              ]
             }</span>,
             "credentialSubject": {
               "id": "did:example:6789",
@@ -267,7 +305,7 @@ ol.algorithm li:before {
 
       <p>
         This process MUST be followed to produce revocation status change for each
-        <a>verifiable credential</a> that includes <a>RevocationStatus2021-LDAP</a>
+        <a>verifiable credential</a> that includes <a>RevocationStatus2021LDAP</a>
         method as value for its <a>credentialStatus.type</a> property, and thus 
         relies on an underlying <a>directory service</a> to store revocation 
         information.
@@ -275,24 +313,18 @@ ol.algorithm li:before {
 
       <ol class="algorithm">
         <li>
-          Define a fully qualified URL to a resource at <a>directory service</a> 
+          Define parts of LDAP URL to a resource at <a>directory service</a> 
           that resolves to a string explaining the revocation status for the
-          <a>verifiable credential</a> in question.
-          <br>
-          <br>One URL query param value MAY include the value of <a>id</a> property of 
-          the relevant <a>verifiable credential</a>.
-          <br>
-          <br>The other of URL query param values MAY include one of the strings from
-          the <a>type</a> property array specifying the schema against which to 
-          interpret a given <a>verifiable credential</a>.
+          <a>verifiable credential</a> in question. LDAP URL parts MUST include <a>protocol</a>, <a>host</a>, <a>query</a> 
+          and <a>params</a>.
         </li>
         <li>
           Create a resource at chosen location.
           <br>
-          <br>The resource MUST include a <a>description</a> property.
-          <br>The value of <a>description</a> property MUST be a string.
-          <br>The resource MAY also include a <a>date</a> property.
-          <br>The value of the <a>date</a> property MUST be ISO string or UNIX timestamp 
+          <br>- The resource MUST include a <a>description</a> property.
+          <br>- The value of <a>description</a> property MUST be a string.
+          <br>- The resource MAY also include a <a>date</a> property.
+          <br>- The value of the <a>date</a> property MUST be ISO string or UNIX timestamp 
           in milliseconds. ISO string format is suggested due to its readability.
         </li>
       </ol>
@@ -303,31 +335,32 @@ ol.algorithm li:before {
 
       <p>
         This process MUST be followed to identify revocation status of 
-        <a>verifiable credential</a> that includes <a>RevocationStatus2021-LDAP</a>
+        <a>verifiable credential</a> that includes <a>RevocationStatus2021LDAP</a>
         method as value for its <a>credentialStatus.type</a> property. This 
         identifies it as relying on underlying LDAP <a>directory service</a>.
       </p>
 
       <ol class="algorithm">
         <li>
-          Try to perform LDAP search using LDAP URL value from the
-          <a>credentialStatus.id</a> property of a <a>verifiable credential</a>
+          Execute LDAP search operation using LDAP URL parts that are encoded using 
+          value from <a>credentialStatus.protocol</a>, <a>credentialStatus.host</a>, 
+          <a>credentialStatus.query</a>, <a>credentialStatus.params</a> properties 
+          of a <a>verifiable credential</a>
         </li>
         <li>
-          In case LDAP search throws an error code <a>32</a> (not found), 
-          then <a>verifiable credential</a> is not revoked yet.
+          Evaluate revocation status based on a received result from LDAP search 
+          operation. <a>Verifiable credential</a> in question should be considered 
+          as not revoked when LDAP search operation throws an error code <a>32</a> 
+          (not found). In case when LDAP search operation returns a search result - 
+          <a>verifiable credential</a> should be considered as revoked.
+
           <br>
-          <br>In case LDAP search returns search results, then
-          <a>verifiable credential</a> is revoked.
+          <br>If present, each record of LDAP search results MUST include 
+          <a>description</a> property, that if provided MUST be a string.
           <br>
-          <br>In case LDAP search results includes records, each record MUST 
-          include <a>description</a> property, that if provided MUST be
-          a string.
-          <br>
-          <br>In case LDAP search results includes records, each record MAY 
-          include <a>date</a> property.
-          <br>The value <a>date</a> property MUST be ISO string or UNIX timestamp 
-          number in milliseconds.
+          <br>If present, each record of LDAP search results MAY include 
+          <a>date</a> property, that if provided MUST be a date as ISO-formatted 
+          string or UNIX Epoch milliseconds as number.
         </li>
       </ol>
     </section>
