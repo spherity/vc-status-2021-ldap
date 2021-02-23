@@ -1,0 +1,74 @@
+{
+  "name": "@spherity-apps/ldap-revocation-verifier",
+  "version": "1.0.0",
+  "description": "JavaScript implementation of ",
+  "homepage": "",
+  "keywords": [
+    "Messaging",
+    "DIDComm",
+    "DIDCommV2"
+  ],
+  "author": "Konstantin Tsabolov <konstantin.tsabolov@spherity.com",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:spherity-apps/packages/didcomm-js.git"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "test:watch": "jest --watch",
+    "build": "tsc -p tsconfig.build.json",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "eslint --cache",
+    "prepublishOnly": "npm test && npm run lint && npm run build",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push --follow-tags"
+  },
+  "main": "lib/index.js",
+  "files": [
+    "lib/**/*"
+  ],
+  "dependencies": {
+    "ldap-escape": "^2.0.4",
+    "ldapts": "^2.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.22",
+    "@typescript-eslint/eslint-plugin": "^4.14.2",
+    "@typescript-eslint/parser": "^4.14.2",
+    "eslint": "^7.19.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-tsdoc": "^0.2.11",
+    "husky": "^4.3.8",
+    "jest": "^26.6.3",
+    "lint-staged": "^10.5.3",
+    "prettier": "2.2.1",
+    "semantic-release": "^17.3.7",
+    "ts-jest": "^26.5.0",
+    "typescript": "^4.1.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix",
+    "*.{ts}": "prettier --write"
+  }
+}

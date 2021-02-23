@@ -1,0 +1,14 @@
+.dockerignore
+.editorconfig
+.eslintignore
+.eslintrc.js
+.gitignore
+.gitlab-ci.yml
+.prettierrc
+src
+test
+coverage
+CODE_OF_CONDUCT.md
+jest.config.js
+tsconfig.json
+tsconfig.build.json
