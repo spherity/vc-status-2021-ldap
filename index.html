@@ -230,28 +230,30 @@ ol.algorithm li:before {
             <tr>
               <td>protocol</td>
               <td>
-                The value is expected to be a valid LDAP protocol.
+                The <code>protocol</code> property MUST a valid LDAP protocol.
               </td>
             </tr>
             <tr>
               <td>host</td>
               <td>
-                The value is expected to be a valid LDAP host:port.
+                The <code>host</code> property MUST a valid domain address 
+                or host:port.
               </td>
             </tr>
             <tr>
               <td>query</td>
               <td>
-                The value is expected to be a search query for the 
-                <a>verifiable credential</a> location. Numbers that 
-                are present inside brackets identify indexes of 
-                respective values from <a>credentialStatus.params</a> array.
+                The <code>query</code> property MUST a be a valid LDAP search 
+                query for the <a>verifiable credential</a> revocation status 
+                location. Numbers that are present inside brackets identify 
+                indexes of respective values from <a>credentialStatus.params</a> 
+                array.
               </td>
             </tr>
             <tr>
               <td>params</td>
               <td>
-                The value is expected to be input params for 
+                The <code>params</code> property MUST be input params for 
                 <a>credentialStatus.params</a> query.
               </td>
             </tr>
@@ -301,6 +303,33 @@ ol.algorithm li:before {
     </p>
 
     <section class="normative">
+      <h3>Initialization Algorithm</h3>
+
+      <p>
+        This process MUST be followed to define LDAP URL parts for identifying 
+        a location for a potential revocation status record for each <a>verifiable 
+        credential</a> that includes <a>RevocationStatus2021LDAP</a> method as 
+        value for its <a>credentialStatus.type</a> property, and thus relies on 
+        an underlying <a>directory service</a> to store revocation information.
+      </p>
+
+      <ol class="algorithm">
+        <li>
+          Define parts of LDAP URL to a resource at <a>directory service</a> 
+          that MAY resolve to an array of results explaining the revocation status 
+          for the <a>verifiable credential</a> in question. LDAP URL parts MUST 
+          include <a>protocol</a>, <a>host</a>, <a>query</a> and <a>params</a>.
+        </li>
+        <li>
+          Apply LDAP URL parts (protocol, host, query, params) to construct 
+          <a>credentialStatus</a> section as described in the example above. 
+          Build the value of <a>credentialStatus.id</a> property by combining 
+          LDAP URL parts into a single LDAP URL string.
+        </li>
+      </ol>
+    </section>
+
+    <section class="normative">
       <h3>Revocation Algorithm</h3>
 
       <p>
@@ -313,19 +342,16 @@ ol.algorithm li:before {
 
       <ol class="algorithm">
         <li>
-          Define parts of LDAP URL to a resource at <a>directory service</a> 
-          that resolves to a string explaining the revocation status for the
-          <a>verifiable credential</a> in question. LDAP URL parts MUST include <a>protocol</a>, <a>host</a>, <a>query</a> 
-          and <a>params</a>.
-        </li>
-        <li>
-          Create a resource at chosen location.
+          Create a revocation status record at the location defined by LDAP URL parts 
+          (properties: protocol, host, query, params) from <a>credentialStatus</a> 
+          section of a <a>verifiable credential</a>.
           <br>
           <br>- The resource MUST include a <a>description</a> property.
           <br>- The value of <a>description</a> property MUST be a string.
           <br>- The resource MAY also include a <a>date</a> property.
-          <br>- The value of the <a>date</a> property MUST be ISO string or UNIX timestamp 
-          in milliseconds. ISO string format is suggested due to its readability.
+          <br>- The value of the <a>date</a> property MUST be ISO string or UNIX 
+          timestamp  in milliseconds. ISO string format is suggested due to its 
+          readability.
         </li>
       </ol>
     </section>
