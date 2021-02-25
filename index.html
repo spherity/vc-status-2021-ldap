@@ -179,7 +179,7 @@ ol.algorithm li:before {
         <br>
         In the case of its revocation, a respective record becomes publicly 
         accessible via LDAP URL that should be securely constructed via 
-        <a>credentialStatus.protocol</a>, <a>credentialStatus.host</a>, 
+        <a>credentialStatus.ssl</a>, <a>credentialStatus.host</a>, 
         <a>credentialStatus.query</a>, <a>credentialStatus.params</a> 
         properties of the <a>verifiable credential</a>. Thereafter, this 
         <a>verifiable credential</a> should be considered as revoked.
@@ -228,9 +228,11 @@ ol.algorithm li:before {
               </td>
             </tr>
             <tr>
-              <td>protocol</td>
+              <td>ssl</td>
               <td>
-                The <code>protocol</code> property MUST a valid LDAP protocol.
+                The <code>ssl</code> property MUST be a boolean value when 
+                provided or it MAY be skipped that should be treated the 
+                same as like false value was provided.
               </td>
             </tr>
             <tr>
@@ -272,7 +274,7 @@ ol.algorithm li:before {
             <span class="highlight">"credentialStatus": {
               "id": "ldaps://62.242.203.212:636/o=urn:uuid:b80034b6-fb87-4291-8fa7-f8ce2f62749b,cn=CRL 1,ou=Credential Type,dc=company name,dc=com",
               "type": "RevocationStatus2021LDAP",
-              "protocol": "ldaps",
+              "ssl": true,
               "host": "162.242.203.212:636",
               "query": "o={{0}},cn={{1}},ou={{2}},dc={{3}},dc={{4}}",
               "params": [
@@ -318,10 +320,10 @@ ol.algorithm li:before {
           Define parts of LDAP URL to a resource at <a>directory service</a> 
           that MAY resolve to an array of results explaining the revocation status 
           for the <a>verifiable credential</a> in question. LDAP URL parts MUST 
-          include <a>protocol</a>, <a>host</a>, <a>query</a> and <a>params</a>.
+          include <a>ssl</a>, <a>host</a>, <a>query</a> and <a>params</a>.
         </li>
         <li>
-          Apply LDAP URL parts (protocol, host, query, params) to construct 
+          Apply LDAP URL parts (ssl, host, query, params) to construct 
           <a>credentialStatus</a> section as described in the example above. 
           Build the value of <a>credentialStatus.id</a> property by combining 
           LDAP URL parts into a single LDAP URL string.
@@ -343,7 +345,7 @@ ol.algorithm li:before {
       <ol class="algorithm">
         <li>
           Create a revocation status record at the location defined by LDAP URL parts 
-          (properties: protocol, host, query, params) from <a>credentialStatus</a> 
+          (properties: ssl, host, query, params) from <a>credentialStatus</a> 
           section of a <a>verifiable credential</a>.
           <br>
           <br>- The resource MUST include a <a>description</a> property.
@@ -369,7 +371,7 @@ ol.algorithm li:before {
       <ol class="algorithm">
         <li>
           Execute LDAP search operation using LDAP URL parts that are encoded using 
-          value from <a>credentialStatus.protocol</a>, <a>credentialStatus.host</a>, 
+          value from <a>credentialStatus.ssl</a>, <a>credentialStatus.host</a>, 
           <a>credentialStatus.query</a>, <a>credentialStatus.params</a> properties 
           of a <a>verifiable credential</a>
         </li>
