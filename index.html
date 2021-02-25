@@ -232,7 +232,9 @@ ol.algorithm li:before {
               <td>
                 The <code>ssl</code> property MUST be a boolean value when 
                 provided or it MAY be skipped that should be treated the 
-                same as like false value was provided.
+                same as like false value was provided. In case true value 
+                is provided then <a>ldaps</a> protocol will be applied,
+                otherwise - <a>ldap</a>.
               </td>
             </tr>
             <tr>
