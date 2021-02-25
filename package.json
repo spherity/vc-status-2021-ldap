@@ -1,14 +1,14 @@
 {
-  "name": "@spherity-apps/ldap-revocation-verifier",
-  "version": "3.0.0",
+  "name": "vc-status-2021-ldap",
+  "version": "1.0.0",
   "description": "JavaScript implementation of ",
   "homepage": "",
   "keywords": [
-    "Messaging",
+    "ldap",
     "DIDComm",
     "DIDCommV2"
   ],
-  "author": "Konstantin Tsabolov <konstantin.tsabolov@spherity.com",
+  "author": "Valentyn Krykun <valentyn.krykun@spherity.com",
   "contributors": [],
   "license": "Apache-2.0",
   "licenses": [
@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@gitlab.com:spherity-apps/packages/didcomm-js.git"
+    "url": "https://github.com/Spherity/vc-status-2021-ldap.git"
   },
   "engines": {
     "node": ">=12"
