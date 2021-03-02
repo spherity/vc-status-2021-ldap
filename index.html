@@ -140,7 +140,7 @@ ol.algorithm li:before {
       <h2>Introduction</h2>
       <p>
         In the majority of cases, businesses already implement some known revocation 
-        approaches for particular business cases.
+        approaches.
         <br>
         <br>
         One of these "known" options is the usage of directory services such 
@@ -170,19 +170,31 @@ ol.algorithm li:before {
 
         Here we describe the assumptions in this usage of an underlying <a>directory 
         service</a>, which leverages <a>LDAP</a> to obtain records of revocation 
-        status changes for a given <a>verifiable credential</a>.
+        status for a given <a>verifiable credential</a>.
         <br>
         <br>
-        First of all, <a>verifiable credentials</a> issued by an <a>issuer</a> 
-        are not being recorded in <a>directory service</a> by default. 
+        First of all, entire <a>verifiable credentials</a> issued by an <a>issuer</a> 
+        are not assumed to be recorded in <a>directory service</a> by default.
+        Some subset of information, however, need to be retained for revocation to be 
+        executed later, i.e. the pointer to where a revocation record will be posted 
+        if that credential is revoked later. This record can contain more or less 
+        information, but it is assumed this record at least exist to claim credential 
+        status as revoked.
         <br>
         <br>
-        In the case of its revocation, a respective record becomes publicly 
-        accessible via LDAP URL that should be securely constructed via 
-        <a>credentialStatus.ssl</a>, <a>credentialStatus.host</a>, 
-        <a>credentialStatus.query</a>, <a>credentialStatus.params</a> 
-        properties of the <a>verifiable credential</a>. Thereafter, this 
-        <a>verifiable credential</a> should be considered as revoked.
+        In the case of a given credential's revocation, a respective record becomes 
+        publicly accessible and a data of this record can be returned via an LDAP URL that 
+        can be be securely and deterministically constructed via the following list of 
+        properties of a verifiable credential:
+        <ul>
+          <li><a>credentialStatus.ssl</a></li>
+          <li><a>credentialStatus.host</a></li>
+          <li><a>credentialStatus.query</a></li>
+          <li><a>credentialStatus.params</a></li>
+        </ul>
+        If a record is returned by the query assembled from these variables, thereafter, 
+        this verifiable credential should be considered as revoked and any additional 
+        information will be included in the returned message.
 
     </section>
 
@@ -215,9 +227,9 @@ ol.algorithm li:before {
               <td>
                 The constraints on the <code>id</code> property are listed 
                 in the Verifiable Credentials Data Model specification 
-                [[VC-DATA-MODEL]]. The value is expected to be an LDAP URL
-                that MUST NOT be used to identify the status information 
-                associated with the <a>verifiable credential</a>.
+                [[VC-DATA-MODEL]]. The value is expected to be a URL that 
+                identifies the status information associated with the 
+                <a>verifiable credential</a>.
               </td>
             </tr>
             <tr>
@@ -230,18 +242,19 @@ ol.algorithm li:before {
             <tr>
               <td>ssl</td>
               <td>
-                The <code>ssl</code> property MUST be a boolean value when 
-                provided or it MAY be skipped that should be treated the 
-                same as like false value was provided. In case true value 
-                is provided then <a>ldaps</a> protocol will be applied,
-                otherwise - <a>ldap</a>.
+                The <code>ssl</code> property MUST be a boolean value if 
+                present or it MAY be skipped that should be treated the 
+                same as like <code>false</code> value was provided. 
+                In case <code>true</code> value is provided then 
+                <a>ldaps</a> protocol will be applied, otherwise - <a>ldap</a>.
               </td>
             </tr>
             <tr>
               <td>host</td>
               <td>
-                The <code>host</code> property MUST a valid domain address 
-                or host:port.
+                The <code>host</code> property MUST be a valid domain address, 
+                or host ip address with port address concatenated using 
+                <code>:</code>.
               </td>
             </tr>
             <tr>
@@ -251,7 +264,7 @@ ol.algorithm li:before {
                 query for the <a>verifiable credential</a> revocation status 
                 location. Numbers that are present inside brackets identify 
                 indexes of respective values from <a>credentialStatus.params</a> 
-                array.
+                params array.
               </td>
             </tr>
             <tr>
@@ -274,16 +287,47 @@ ol.algorithm li:before {
             "issuer": "did:example:12345",
             "issued": "2021-01-11T00:35:00Z",
             <span class="highlight">"credentialStatus": {
-              "id": "ldaps://62.242.203.212:636/o=urn:uuid:b80034b6-fb87-4291-8fa7-f8ce2f62749b,cn=CRL 1,ou=Credential Type,dc=company name,dc=com",
+              "id": "ldaps://62.242.203.212:636/o=dolor,cn=ipsum,ou=lorem,dc=example,dc=com",
               "type": "RevocationStatus2021LDAP",
               "ssl": true,
-              "host": "162.242.203.212:636",
+              "host": "62.242.203.212:636",
               "query": "o={{0}},cn={{1}},ou={{2}},dc={{3}},dc={{4}}",
               "params": [
-                "urn:uuid:b80034b6-fb87-4291-8fa7-f8ce2f62749b",
-                "CRL 1",
-                "Credential Type",
-                "company name",
+                "dolor",
+                "ipsum",
+                "lorem",
+                "example",
+                "com"
+              ]
+            }</span>,
+            "credentialSubject": {
+              "id": "did:example:6789",
+              "type": "Person"
+            },
+            "proof": { <span class="comment">...</span> }
+          }
+        </pre>
+
+        <pre class="example nohighlight" title="Example RevocationStatus2021LDAP">
+          {
+            "@context": [
+              "https://www.w3.org/2018/credentials/v1"
+            ],
+            "id": "https://example.com/credentials/23894672367",
+            "type": ["VerifiableCredential"],
+            "issuer": "did:example:12345",
+            "issued": "2021-01-11T00:35:00Z",
+            <span class="highlight">"credentialStatus": {
+              "id": "ldaps://example.com/o=dolor,cn=ipsum,ou=lorem,dc=example,dc=com",
+              "type": "RevocationStatus2021LDAP",
+              "ssl": true,
+              "host": "example.com",
+              "query": "o={{0}},cn={{1}},ou={{2}},dc={{3}},dc={{4}}",
+              "params": [
+                "dolor",
+                "ipsum",
+                "lorem",
+                "example",
                 "com"
               ]
             }</span>,
@@ -302,8 +346,8 @@ ol.algorithm li:before {
     <h2>Algorithms</h2>
 
     <p>
-      The following section outlines the algorithms that are used to revoke
-      and validate revocation status as described by this document.
+      The following section outlines the algorithms that are used to initialize, 
+      revoke and validate revocation status as described by this document.
     </p>
 
     <section class="normative">
@@ -311,7 +355,7 @@ ol.algorithm li:before {
 
       <p>
         This process MUST be followed to define LDAP URL parts for identifying 
-        a location for a potential revocation status record for each <a>verifiable 
+        a location for a potential revocation status record per each <a>verifiable 
         credential</a> that includes <a>RevocationStatus2021LDAP</a> method as 
         value for its <a>credentialStatus.type</a> property, and thus relies on 
         an underlying <a>directory service</a> to store revocation information.
@@ -320,15 +364,19 @@ ol.algorithm li:before {
       <ol class="algorithm">
         <li>
           Define parts of LDAP URL to a resource at <a>directory service</a> 
-          that MAY resolve to an array of results explaining the revocation status 
-          for the <a>verifiable credential</a> in question. LDAP URL parts MUST 
-          include <a>ssl</a>, <a>host</a>, <a>query</a> and <a>params</a>.
+          that MAY resolve to an array of results to describe the revocation status 
+          for the <a>verifiable credential</a> in question. 
+          LDAP URL parts MUST include following properties <a>ssl</a>, <a>host</a>, 
+          <a>query</a> and <a>params</a>.
         </li>
         <li>
-          Apply LDAP URL parts (ssl, host, query, params) to construct 
-          <a>credentialStatus</a> section as described in the example above. 
-          Build the value of <a>credentialStatus.id</a> property by combining 
-          LDAP URL parts into a single LDAP URL string.
+          Securely combine aforementioned LDAP URL parts to construct a fully 
+          qualified LDAP URL value and apply its value to <a>credentialStatus.id</a> 
+          property.
+        </li>
+        <li>
+          Apply aforementioned LDAP URL parts as values to respective properties within 
+          <a>credentialStatus</a> section.
         </li>
       </ol>
     </section>
@@ -337,7 +385,7 @@ ol.algorithm li:before {
       <h3>Revocation Algorithm</h3>
 
       <p>
-        This process MUST be followed to produce revocation status change for each
+        This process MUST be followed to execute revocation per each
         <a>verifiable credential</a> that includes <a>RevocationStatus2021LDAP</a>
         method as value for its <a>credentialStatus.type</a> property, and thus 
         relies on an underlying <a>directory service</a> to store revocation 
@@ -346,18 +394,17 @@ ol.algorithm li:before {
 
       <ol class="algorithm">
         <li>
-          Create a revocation status record at the location defined by LDAP URL parts 
-          (properties: ssl, host, query, params) from <a>credentialStatus</a> 
-          section of a <a>verifiable credential</a>.
-          <br>
-          <br>- The resource MUST include a <a>description</a> property.
-          <br>- The value of <a>description</a> property MUST be a string.
-          <br>- The resource MAY also include a <a>date</a> property.
-          <br>- The value of the <a>date</a> property MUST be ISO string or UNIX 
-          timestamp  in milliseconds. ISO string format is suggested due to its 
+          Create a revocation status record at the location defined by LDAP URL 
+          parts described inside <a>credentialStatus</a> section of a given 
+          <a>verifiable credential</a>.
+          The record MAY include a <a>description</a> property.
+          The record MAY also include a <a>date</a> property.
+          The value of the <a>date</a> property MUST be ISO string or UNIX 
+          timestamp in milliseconds. ISO string format is suggested due to its 
           readability.
         </li>
       </ol>
+
     </section>
 
     <section class="normative">
@@ -372,25 +419,28 @@ ol.algorithm li:before {
 
       <ol class="algorithm">
         <li>
-          Execute LDAP search operation using LDAP URL parts that are encoded using 
-          value from <a>credentialStatus.ssl</a>, <a>credentialStatus.host</a>, 
-          <a>credentialStatus.query</a>, <a>credentialStatus.params</a> properties 
-          of a <a>verifiable credential</a>
+          Build a fully qualified LDAP URL by securely combining properties
+          from <a>credentialStatus</a> section of a <a>verifiable credential</a>.
         </li>
         <li>
-          Evaluate revocation status based on a received result from LDAP search 
-          operation. <a>Verifiable credential</a> in question should be considered 
-          as not revoked when LDAP search operation throws an error code <a>32</a> 
-          (not found). In case when LDAP search operation returns a search result - 
-          <a>verifiable credential</a> should be considered as revoked.
-
+          Execute LDAP search operation using LDAP URL.
+        </li>
+        <li>
+          Evaluate results of LDAP search operation.
           <br>
-          <br>If present, each record of LDAP search results MUST include 
-          <a>description</a> property, that if provided MUST be a string.
+          <br>In case error code <a>32</a> (not found) is thrown, then the status 
+          of a <a>verifiable credential</a> should be considered as not rovoked. 
           <br>
-          <br>If present, each record of LDAP search results MAY include 
-          <a>date</a> property, that if provided MUST be a date as ISO-formatted 
-          string or UNIX Epoch milliseconds as number.
+          <br>In case LDAP search operation results are recieved, then the status 
+          of a <a>verifiable credential</a> should be considered as revoked.
+          <br>
+          <br>If present, LDAP search results MAY include an object with
+          <a>description</a> property. If present, <a>description</a> property 
+          MUST be a string.
+          <br>
+          <br>If present, LDAP search results MAY include an object with 
+          <a>date</a> property. If present, <a>date</a> property MUST be a date 
+          as ISO-formatted string or UNIX Epoch milliseconds as number.
         </li>
       </ol>
     </section>
@@ -404,6 +454,17 @@ ol.algorithm li:before {
       This section details the general privacy considerations and specific privacy
       implications of deploying this specification into production environments.
     </p>
+
+    <section class="informative">
+      <h3>Correlation</h3>
+
+      <p>
+        This method is best suited for fully public or semi-public credentials. 
+        Referencing the <a>verifiable credential</a>'s unique ID in the LDAP query string 
+        adds additional correlation risk, which may be an anti-pattern in some use 
+        cases.
+      </p>
+    </section>
 
     <section class="informative">
       <h3>Content Distribution Networks</h3>
