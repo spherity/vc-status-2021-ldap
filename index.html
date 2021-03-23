@@ -11,12 +11,52 @@
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script src="./common.js" class="remove"></script>
     <script type="text/javascript" class="remove">
+      const respecPagesJson = {
+        name: "vc-status-2020-ldap",
+        status: "UNOFFICIAL",
+        latest: "https://spherity.github.io/vc-status-2021-ldap",
+        repository: "https://github.com/Spherity/vc-status-2021-ldap",
+        issues: "https://github.com/Spherity/vc-status-2021-ldap/issues",
+        // group: {
+        //   name: "Credentials Community Group",
+        //   url: "https://www.w3.org/community/credentials/",
+        //   list: "public-credentials",
+        //   patentUri: "https://www.w3.org/community/about/agreements/cla/",
+        // },
+        editors: [
+          {
+            name: "Alexander Yenkalov",
+            url: "https://github.com/AlexYenkalov",
+            company: "Spherity",
+            companyURL: "https://www.spherity.com/",
+          },
+          {
+            name: "Juan Caballero",
+            url: "https://github.com/bumblefudge",
+            company: "Spherity",
+            companyURL: "https://www.spherity.com/",
+          },
+        ],
+        bibliography: {
+          "RDF-DATASET-NORMALIZATION": {
+            title: "RDF Dataset Normalization 1.0",
+            href: "http://json-ld.github.io/normalization/spec/",
+            authors: ["Alexander Yenkalov", "Andrey Orlov"],
+            // status: "CGDRAFT",
+            // publisher: "JSON-LD Community Group",
+          },
+        },
+      };
+
       var respecConfig = {
         // specification status (e.g., WD, LCWD, NOTE, etc.). If in doubt use ED.
-        specStatus: "CG-DRAFT",
+        specStatus: respecPagesJson.status,
 
         // the specification's short name, as in http://www.w3.org/TR/short-name/
-        shortName: "vc-status-2021-ldap",
+        shortName: respecPagesJson.name,
+
+        // if there a publicly available Editor's Draft, this is the link
+        edDraftURI: respecPagesJson.latest,
 
         // subtitle for the spec
         subtitle: "Directory service (LDAP) based mechanism for revoking Verifiable Credentials",
@@ -48,12 +88,8 @@
 
         // editors, add as many as you like
         // only "name" is required
-        editors: [
-          { name: "Alexander Yenkalov", url: "https://github.com/AlexYenkalov",
-            company: "Spherity", companyURL: "http://spherity.com/"},
-          { name: "Andrey Orlov", url: "https://github.com/aaorlov",
-            company: "Spherity", companyURL: "https://spherity.com/"}
-        ],
+        editors: respecPagesJson.editors,
+
         // authors, add as many as you like.
         // This is optional, uncomment if you have authors as well as editors.
         // only "name" is required. Same format as editors.
