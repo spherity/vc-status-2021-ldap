@@ -447,35 +447,31 @@ ol.algorithm li:before {
 
   </section>
 
-  <section class="informative">
-    <h2>Privacy Considerations</h2>
+  <section>
+    <section class="informative">
+      <h2>Privacy Considerations</h2>
 
-    <p>
-      This section details the general privacy considerations and specific privacy
-      implications of deploying this specification into production environments.
-    </p>
+      <p>
+        This section details the general privacy considerations and specific privacy
+        implications of deploying this specification into production environments.
+      </p>
+    </section>
 
     <section class="informative">
       <h3>Correlation</h3>
 
       <p>
-        This method is best suited for fully public or semi-public credentials. 
-        Referencing the <a>verifiable credential</a>'s unique ID in the LDAP query string 
-        adds additional correlation risk, which may be an anti-pattern in some use 
-        cases.
+        This method is best suited for fully public or semi-public credentials;
+        potentially leaking status information is assumed to be an acceptable
+        risk, and recent, signed data about current status of a verifiable
+        credential is assumed to be "authoritative" over other or older records,
+        which this method is not optimized to minimize.
       </p>
-    </section>
-
-    <section class="informative">
-      <h3>Content Distribution Networks</h3>
-
+       
       <p>
-        The use of content distribution networks by <a>issuers</a> can increase the
-        privacy of <a>holders</a> by reducing or eliminating requests for the
-        revocation lists from the <a>issuer</a>. Often, a request for a revocation
-        list will be served by an edge device and thus be faster and reduce the load
-        on the server as well as cloaking <a>verifier</a> and <a>holder</a>
-        traffic from <a>issuers</a>.
+        Referencing the <a>verifiable credential</a>'s unique ID in the LDAP
+        query string adds additional correlation risk, which may be an
+        anti-pattern in some use cases.
       </p>
     </section>
 
@@ -497,9 +493,24 @@ ol.algorithm li:before {
       advice of security and cryptography professionals when implementing mission
       critical systems using the technology outlined in this specification.
     </p>
+ 
+    <p>
+      Our architecture assumes keys are managed in common across both issuance
+      and status-publication infrastructure. The latter is assumed to be secured
+      by LDAPS; LDAP-specific security is assumed and largely out of scope of
+      this specification, although LDAP queries are stored in the credential in
+      both composed and decomposed form to assure validation and comparison to
+      better secure queries. 
+    </p>
 
-    <p class="issue">
-      <b>TODO: Write security considerations.</b>
+    <p>
+      Further research would be needed on how (or whether it is worthwhile) to
+      sign the specific status object and how to verify the relationship between
+      signing key of same and issuance key of original VC. A signed envelope
+      around the status object returned (or even a fully-formed credential
+      issued against a published schema) is definitely one possibility, for
+      use-cases where metadata passed along with status would be complex, or
+      need to be secured additionally.
     </p>
 
   </section>
