@@ -1,0 +1,25 @@
+{
+  "@context": {
+    "@protected": true,
+
+    "RevocationStatus2020LDAP": {
+      "@id":
+        "https://spherity.github.io/vc-status-2021-ldap#RevocationList2020Status",
+      "@context": {
+        "@protected": true,
+
+        "id": "@id",
+        "type": "@type",
+
+        "protocol":
+          "https://spherity.github.io/vc-status-2021-ldap#protocol",
+        "host":
+          "https://spherity.github.io/vc-status-2021-ldap#host",
+        "query":
+          "https://spherity.github.io/vc-status-2021-ldap#query",
+        "params":
+          "https://spherity.github.io/vc-status-2021-ldap#params"
+      }
+    }
+  }
+}
