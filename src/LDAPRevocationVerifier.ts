@@ -8,7 +8,7 @@ class LDAPRevocationVerifier {
   timeout: number;
   connectTimeout: number;
 
-  constructor(timeout: number = 10000, connectTimeout: number = 10000) {
+  constructor(timeout = 10000, connectTimeout = 10000) {
     this.timeout = timeout;
     this.connectTimeout = connectTimeout;
   }
@@ -20,9 +20,9 @@ class LDAPRevocationVerifier {
         return ldapEscape.dn`${settings.params[+index.replace(/{|}/g, '')]}`;
       }
     );
-
+    const protocol = settings.ssl === true ? 'ldap' : 'ldaps';
     const client = new Client({
-      url: `${settings.protocol}://${settings.host}`,
+      url: `${protocol}://${settings.host}`,
       timeout: this.timeout,
       connectTimeout: this.connectTimeout,
       tlsOptions: { rejectUnauthorized: false },
@@ -42,7 +42,7 @@ class LDAPRevocationVerifier {
         err.message === 'SearchRequest: Operation timed out'
       ) {
         throw new Error(
-          `LDAP servcer does not respond when requsting data using LDAP URI: ${settings.protocol}://${settings.host}`
+          `LDAP servcer does not respond when requsting data using LDAP URI: ${protocol}://${settings.host}`
         );
       }
 
