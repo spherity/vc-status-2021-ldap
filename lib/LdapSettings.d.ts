@@ -1,7 +1,7 @@
 export default class LdapSettings {
-    protocol: string;
+    ssl: boolean;
     host: string;
     query: string;
     params: Array<string>;
-    constructor(protocol: string, host: string, query: string, params: Array<string>);
+    constructor(ssl: boolean, host: string, query: string, params: Array<string>);
 }
