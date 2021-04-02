@@ -3,26 +3,28 @@
   <head>
     <title>Revocation Status 2021 LDAP</title>
     <meta http-equiv='Content-Type' content='text/html;charset=utf-8'/>
-    <!--
-      === NOTA BENE ===
-      For the three scripts below, if your spec resides on dev.w3 you can check them
-      out in the same tree and use relative links so that they'll work offline,
-     -->
+
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
-    <script src="./common.js" class="remove"></script>
     <script type="text/javascript" class="remove">
-      const respecPagesJson = {
-        name: "vc-status-2020-ldap",
-        status: "UNOFFICIAL",
-        latest: "https://spherity.github.io/vc-status-2021-ldap",
-        repository: "https://github.com/Spherity/vc-status-2021-ldap",
-        issues: "https://github.com/Spherity/vc-status-2021-ldap/issues",
-        // group: {
-        //   name: "Credentials Community Group",
-        //   url: "https://www.w3.org/community/credentials/",
-        //   list: "public-credentials",
-        //   patentUri: "https://www.w3.org/community/about/agreements/cla/",
-        // },
+      var respecConfig = {
+        specStatus: 'UNOFFICIAL',
+        shortName: "vc-status-2021-ldap",
+        edDraftURI: "https://spherity.github.io/vc-status-2021-ldap",
+        subtitle: "Directory service (LDAP) based mechanism for revoking Verifiable Credentials",
+        previousMaturity: "UNOFFICIAL",
+        localBiblio: {
+          "RDF-DATASET-NORMALIZATION": {
+            title: "RDF Dataset Normalization 1.0",
+            href: "http://json-ld.github.io/normalization/spec/",
+            authors: ["Alexander Yenkalov", "Andrey Orlov"],
+            status: "CGDRAFT",
+            publisher: "JSON-LD Community Group",
+          },
+        },
+        doJsonLd: true,
+
+        github: "https://github.com/spherity/vc-status-2021-ldap/",
+        includePermalinks: false,
         editors: [
           {
             name: "Alexander Yenkalov",
@@ -36,63 +38,9 @@
             company: "Spherity",
             companyURL: "https://www.spherity.com/",
           },
+          { name: "Andrey Orlov", url: "https://github.com/aaorlov",
+            company: "Spherity", companyURL: "https://spherity.com/"},
         ],
-        bibliography: {
-          "RDF-DATASET-NORMALIZATION": {
-            title: "RDF Dataset Normalization 1.0",
-            href: "http://json-ld.github.io/normalization/spec/",
-            authors: ["Alexander Yenkalov", "Andrey Orlov"],
-            // status: "CGDRAFT",
-            // publisher: "JSON-LD Community Group",
-          },
-        },
-      };
-
-      var respecConfig = {
-        // specification status (e.g., WD, LCWD, NOTE, etc.). If in doubt use ED.
-        specStatus: respecPagesJson.status,
-
-        // the specification's short name, as in http://www.w3.org/TR/short-name/
-        shortName: respecPagesJson.name,
-
-        // if there a publicly available Editor's Draft, this is the link
-        edDraftURI: respecPagesJson.latest,
-
-        // subtitle for the spec
-        subtitle: "Directory service (LDAP) based mechanism for revoking Verifiable Credentials",
-
-        // if you wish the publication date to be other than today, set this
-        //publishDate: "2019-03-26",
-        //crEnd: "2019-04-23",
-        //implementationReportURI: "https://w3c.github.io/sdh-test-suite",
-        previousMaturity: "UNOFFICIAL",
-        // previousPublishDate: "2020-01-11",
-
-        // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
-        // and its maturity status
-        // previousPublishDate:  "1977-03-15",
-        // previousMaturity:  "WD",
-
-        // extend the bibliography entries
-        localBiblio: ccg.localBiblio,
-        doJsonLd: true,
-
-        github: "https://github.com/spherity/vc-status-2021-ldap/",
-        includePermalinks: false,
-
-        // if there a publicly available Editor's Draft, this is the link
-        edDraftURI: "https://spherity.github.io/vc-status-2021-ldap/",
-
-        // if this is a LCWD, uncomment and set the end of its review period
-        // lcEnd: "2009-08-05",
-
-        // editors, add as many as you like
-        // only "name" is required
-        editors: respecPagesJson.editors,
-
-        // authors, add as many as you like.
-        // This is optional, uncomment if you have authors as well as editors.
-        // only "name" is required. Same format as editors.
         authors:
         [
           { name: "Alexander Yenkalov", url: "https://github.com/AlexYenkalov",
@@ -100,58 +48,25 @@
           { name: "Andrey Orlov", url: "https://github.com/aaorlov",
             company: "Spherity", companyURL: "https://spherity.com/"}
         ],
-        // name of the WG
         wg:           "Credentials Community Group",
-
-        // URI of the public WG page
         wgURI:        "https://www.w3.org/community/credentials/",
-
-        // name (with the @w3c.org) of the public mailing to which comments are due
         wgPublicList: "public-credentials",
-
-        // URI of the patent status for this WG, for Rec-track documents
-        // !!!! IMPORTANT !!!!
-        // This is important for Rec-track documents, do not copy a patent URI from a random
-        // document unless you know what you're doing. If in doubt ask your friendly neighborhood
-        // Team Contact.
-        //wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/98922/status",
         maxTocLevel: 2,
         inlineCSS: true
       };
     </script>
     <style>
-pre .highlight {
-  font-weight: bold;
-  color: green;
-}
-pre .comment {
-  font-weight: bold;
-  color: Gray;
-}
-.color-text {
-  font-weight: bold;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-}
-ol.algorithm {
-  counter-reset: numsection;
-  list-style-type: none;
-}
-ol.algorithm li {
-  margin: 0.5em 0;
-}
-ol.algorithm li:before {
-  font-weight: bold;
-  counter-increment: numsection;
-  content: counters(numsection, ".") ") ";
-}
+      table {
+        width: 100%;
+      }
     </style>
   </head>
   <body>
     <section id='abstract'>
       <p>
-        This specification describes a mechanism for publishing the revocation 
-        status of Verifiable Credentials that leverages directory service 
-        (e.g. Active Directory), where respective records are publicly 
+        This specification describes a mechanism for publishing the revocation
+        status of Verifiable Credentials that leverages directory service
+        (e.g. Active Directory), where respective records are publicly
         accessible via LDAP.
       </p>
     </section>
@@ -166,61 +81,67 @@ ol.algorithm li:before {
       </p>
       <p>
         Comments regarding all aspects of this document are welcome.
-        Please file issues directly on 
+        Please file issues directly on
         <a href="https://github.com/spherity/vc-status-2021-ldap/issues/">GitHub</a>
-    </p>
+      </p>
 
     </section>
 
     <section class="informative">
       <h2>Introduction</h2>
       <p>
-        In the majority of cases, businesses already implement some known revocation 
+        In the majority of cases, businesses already implement some known revocation
         approaches.
         <br>
         <br>
-        One of these "known" options is the usage of directory services such 
-        as Active Directory that provides the access to records via 
-        <a href='https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol'>Lightweight Directory Access Protocol (LDAP)<a>.
+        One of these "known" options is the usage of directory services such
+        as Active Directory that provides the access to records via
+        <a href='https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol'>Lightweight Directory Access Protocol (LDAP)</a>.
         <br>
         <br>
         An <a>issuer</a> of <a>verifiable credentials</a> in such a system
-        [[VC-DATA-MODEL]] can use a pointer to a particular location at 
-        <a>directory service</a> inside of <a>verifiable credential</a>, that 
-        a <a>verifier</a> can check to see if a credential has been revoked. 
+        [[VC-DATA-MODEL]] can use a pointer to a particular location at
+        <a>directory service</a> inside of <a>verifiable credential</a>, that
+        a <a>verifier</a> can check to see if a credential has been revoked.
+      </p>
+
+      <p>
+        The <a href="#data-model">Data Model</a> section covers each vocabulary
+        item, its properties, other attributes for each item.
       </p>
     </section>
 
-    <section id="conformance" class="normative">
-    </section>
+    <section id="conformance"></section>
 
     <section class="informative">
       <h2>Terminology</h2>
+      <p>
+        The following terms are used to describe concepts in this specification.
+      </p>
 
-      <div
-        data-include="./terms.html" data-oninclude="restrictReferences"></div>
+      <div data-include="./terms.html" data-oninclude="restrictReferences"></div>
     </section>
 
     <section class="informative">
       <h2>Process Flow</h2>
 
-        Here we describe the assumptions in this usage of an underlying <a>directory 
-        service</a>, which leverages <a>LDAP</a> to obtain records of revocation 
+        Here we describe the assumptions in this usage of an underlying <a>directory
+        service</a>, which leverages <a>LDAP</a> to obtain records of revocation
         status for a given <a>verifiable credential</a>.
         <br>
         <br>
-        First of all, entire <a>verifiable credentials</a> issued by an <a>issuer</a> 
+        First of all, entire <a>verifiable credentials</a> issued by an <a>issuer</a>
         are not assumed to be recorded in <a>directory service</a> by default.
-        Some subset of information, however, need to be retained for revocation to be 
-        executed later, i.e. the pointer to where a revocation record will be posted 
-        if that credential is revoked later. This record can contain more or less 
-        information, but it is assumed this record at least exist to claim credential 
+        Some subset of information, however, need to be retained for revocation to be
+        executed later, i.e. the pointer to where a revocation record will be posted
+        if that credential is revoked later. This record can contain more or less
+        information, but it is assumed this record at least exist to claim credential
         status as revoked.
         <br>
         <br>
-        In the case of a given credential's revocation, a respective record becomes 
-        publicly accessible and a data of this record can be returned via an LDAP URL that 
-        can be be securely and deterministically constructed via the following list of 
+        In the case of a given credential's revocation, a respective record becomes
+        publicly accessible and a data of this record can be returned via an LDAP URL that
+        can be be securely and deterministically constructed via the following list of
         properties of a verifiable credential:
         <ul>
           <li><a>credentialStatus.ssl</a></li>
@@ -228,161 +149,248 @@ ol.algorithm li:before {
           <li><a>credentialStatus.query</a></li>
           <li><a>credentialStatus.params</a></li>
         </ul>
-        If a record is returned by the query assembled from these variables, thereafter, 
-        this verifiable credential should be considered as revoked and any additional 
+        If a record is returned by the query assembled from these variables, thereafter,
+        this verifiable credential should be considered as revoked and any additional
         information will be included in the returned message.
 
     </section>
 
-    <section class="normative">
+    <section class="normative" id="data-model">
       <h2>Data Model</h2>
 
       <p>
         The following sections outlines the data model for this document.
       </p>
 
-      <section>
-        <h3>RevocationStatus2021LDAP</h3>
+      <p>
+        You may view the latest json-ld vocabulary at: <br />
+        <a href="https://spherity.github.io/vc-status-2021-ldap/contexts/vc-status-2021-ldap/v1.jsonld">
+          https://spherity.github.io/vc-status-2021-ldap/contexts/vc-status-2021-ldap/v1.jsonld
+        </a>
+      </p>
 
+
+      <section id="RevocationStatus2021LDAP">
+        <h2>RevocationStatus2021LDAP</h2>
         <p>
           When an <a>issuer</a> desires to enable revocation for a
-          <a>verifiable credential</a>, they MAY add a <code>status</code> 
+          <a>verifiable credential</a>, they MAY add a <code>status</code>
           property that uses the data model described in this specification.
         </p>
 
         <table class="simple">
-          <thead>
-            <tr>
-              <th style="white-space: nowrap">Property</th>
-              <th>Description</th>
-            </tr>
-          </thead>
           <tbody>
-            <tr>
-              <td>id</td>
-              <td>
-                The constraints on the <code>id</code> property are listed 
-                in the Verifiable Credentials Data Model specification 
-                [[VC-DATA-MODEL]]. The value is expected to be a URL that 
-                identifies the status information associated with the 
-                <a>verifiable credential</a>.
-              </td>
-            </tr>
-            <tr>
-              <td>type</td>
-              <td>
-                The <code>type</code> property MUST be 
-                <code>RevocationStatus2021LDAP</code>.
-              </td>
-            </tr>
-            <tr>
-              <td>ssl</td>
-              <td>
-                The <code>ssl</code> property MUST be a boolean value if 
-                present or it MAY be skipped that should be treated the 
-                same as like <code>false</code> value was provided. 
-                In case <code>true</code> value is provided then 
-                <a>ldaps</a> protocol will be applied, otherwise - <a>ldap</a>.
-              </td>
-            </tr>
-            <tr>
-              <td>host</td>
-              <td>
-                The <code>host</code> property MUST be a valid domain address, 
-                or host ip address with port address concatenated using 
-                <code>:</code>.
-              </td>
-            </tr>
-            <tr>
-              <td>query</td>
-              <td>
-                The <code>query</code> property MUST a be a valid LDAP search 
-                query for the <a>verifiable credential</a> revocation status 
-                location. Numbers that are present inside brackets identify 
-                indexes of respective values from <a>credentialStatus.params</a> 
-                params array.
-              </td>
-            </tr>
-            <tr>
-              <td>params</td>
-              <td>
-                The <code>params</code> property MUST be input params for 
-                <a>credentialStatus.params</a> query.
-              </td>
-            </tr>
+          <tr>
+            <td>
+              <a href="https://json-ld.org/spec/latest/json-ld/#dfn-terms">Term</a>
+            </td>
+            <td>
+              <a href="https://spherity.github.io/vc-status-2021-ldap#RevocationStatus2021LDAP">RevocationStatus2021LDAP</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="https://json-ld.org/spec/latest/json-ld/#dfn-iris">Full IRI</a>
+            </td>
+            <td>
+              <a href="https://spherity.github.io/vc-status-2021-ldap#RevocationStatus2021LDAP">https://spherity.github.io/vc-status-2021-ldap#RevocationStatus2021LDAP</a>
+            </td>
+          </tr>
           </tbody>
         </table>
+        <pre class="example nohighlight" title="Example RevocationStatus2021LDAP">
+            {
+              "@context": [
+                "https://www.w3.org/2018/credentials/v1"
+              ],
+              "id": "https://example.com/credentials/23894672367",
+              "type": ["VerifiableCredential"],
+              "issuer": "did:example:12345",
+              "issued": "2021-01-11T00:35:00Z",
+              <span class="highlight">"credentialStatus": {
+                "id": "ldaps://62.242.203.212:636/o=dolor,cn=ipsum,ou=lorem,dc=example,dc=com",
+                "type": "RevocationStatus2021LDAP",
+                "ssl": true,
+                "host": "62.242.203.212:636",
+                "query": "o={{0}},cn={{1}},ou={{2}},dc={{3}},dc={{4}}",
+                "params": [
+                  "dolor",
+                  "ipsum",
+                  "lorem",
+                  "example",
+                  "com"
+                ]
+              }</span>,
+              "credentialSubject": {
+                "id": "did:example:6789",
+                "type": "Person"
+              },
+              "proof": { <span class="comment">...</span> }
+            }
+          </pre>
 
         <pre class="example nohighlight" title="Example RevocationStatus2021LDAP">
-          {
-            "@context": [
-              "https://www.w3.org/2018/credentials/v1"
-            ],
-            "id": "https://example.com/credentials/23894672367",
-            "type": ["VerifiableCredential"],
-            "issuer": "did:example:12345",
-            "issued": "2021-01-11T00:35:00Z",
-            <span class="highlight">"credentialStatus": {
-              "id": "ldaps://62.242.203.212:636/o=dolor,cn=ipsum,ou=lorem,dc=example,dc=com",
-              "type": "RevocationStatus2021LDAP",
-              "ssl": true,
-              "host": "62.242.203.212:636",
-              "query": "o={{0}},cn={{1}},ou={{2}},dc={{3}},dc={{4}}",
-              "params": [
-                "dolor",
-                "ipsum",
-                "lorem",
-                "example",
-                "com"
-              ]
-            }</span>,
-            "credentialSubject": {
-              "id": "did:example:6789",
-              "type": "Person"
-            },
-            "proof": { <span class="comment">...</span> }
-          }
-        </pre>
+            {
+              "@context": [
+                "https://www.w3.org/2018/credentials/v1"
+              ],
+              "id": "https://example.com/credentials/23894672367",
+              "type": ["VerifiableCredential"],
+              "issuer": "did:example:12345",
+              "issued": "2021-01-11T00:35:00Z",
+              <span class="highlight">"credentialStatus": {
+                "id": "ldaps://example.com/o=dolor,cn=ipsum,ou=lorem,dc=example,dc=com",
+                "type": "RevocationStatus2021LDAP",
+                "ssl": true,
+                "host": "example.com",
+                "query": "o={{0}},cn={{1}},ou={{2}},dc={{3}},dc={{4}}",
+                "params": [
+                  "dolor",
+                  "ipsum",
+                  "lorem",
+                  "example",
+                  "com"
+                ]
+              }</span>,
+              "credentialSubject": {
+                "id": "did:example:6789",
+                "type": "Person"
+              },
+              "proof": { <span class="comment">...</span> }
+            }
+          </pre>
 
-        <pre class="example nohighlight" title="Example RevocationStatus2021LDAP">
-          {
-            "@context": [
-              "https://www.w3.org/2018/credentials/v1"
-            ],
-            "id": "https://example.com/credentials/23894672367",
-            "type": ["VerifiableCredential"],
-            "issuer": "did:example:12345",
-            "issued": "2021-01-11T00:35:00Z",
-            <span class="highlight">"credentialStatus": {
-              "id": "ldaps://example.com/o=dolor,cn=ipsum,ou=lorem,dc=example,dc=com",
-              "type": "RevocationStatus2021LDAP",
-              "ssl": true,
-              "host": "example.com",
-              "query": "o={{0}},cn={{1}},ou={{2}},dc={{3}},dc={{4}}",
-              "params": [
-                "dolor",
-                "ipsum",
-                "lorem",
-                "example",
-                "com"
-              ]
-            }</span>,
-            "credentialSubject": {
-              "id": "did:example:6789",
-              "type": "Person"
-            },
-            "proof": { <span class="comment">...</span> }
-          }
-        </pre>
+        <section id="ssl">
+          <h3>SSL</h3>
+          <p>
+            The <code>ssl</code> property MUST be a boolean value if
+            present or it MAY be skipped that should be treated the
+            same as like <code>false</code> value was provided.
+            In case <code>true</code> value is provided then
+            <a>ldaps</a> protocol will be applied, otherwise - <a>ldap</a>.
+          </p>
+
+          <table class="simple">
+            <tbody>
+            <tr>
+              <td>
+                <a href="https://json-ld.org/spec/latest/json-ld/#dfn-terms">Term</a>
+              </td>
+              <td>
+                <a href="https://spherity.github.io/vc-status-2021-ldap#ssl">ssl</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https://json-ld.org/spec/latest/json-ld/#dfn-iris">Full IRI</a>
+              </td>
+              <td>
+                <a href="https://spherity.github.io/vc-status-2021-ldap#ssl">https://spherity.github.io/vc-status-2021-ldap#ssl</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="host">
+          <h3>Host</h3>
+          <p>
+            The <code>host</code> property MUST be a valid domain address,
+            or host ip address with port address concatenated using
+            <code>:</code>.
+          </p>
+
+          <table class="simple">
+            <tbody>
+            <tr>
+              <td>
+                <a href="https://json-ld.org/spec/latest/json-ld/#dfn-terms">Term</a>
+              </td>
+              <td>
+                <a href="https://spherity.github.io/vc-status-2021-ldap#host">host</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https://json-ld.org/spec/latest/json-ld/#dfn-iris">Full IRI</a>
+              </td>
+              <td>
+                <a href="https://spherity.github.io/vc-status-2021-ldap#host">https://spherity.github.io/vc-status-2021-ldap#host</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="query">
+          <h3>Query</h3>
+          <p>
+            The <code>query</code> property MUST a be a valid LDAP search
+            query for the <a>verifiable credential</a> revocation status
+            location. Numbers that are present inside brackets identify
+            indexes of respective values from <a>credentialStatus.params</a>
+            params array.
+          </p>
+
+          <table class="simple">
+            <tbody>
+            <tr>
+              <td>
+                <a href="https://json-ld.org/spec/latest/json-ld/#dfn-terms">Term</a>
+              </td>
+              <td>
+                <a href="https://spherity.github.io/vc-status-2021-ldap#query">query</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https://json-ld.org/spec/latest/json-ld/#dfn-iris">Full IRI</a>
+              </td>
+              <td>
+                <a href="https://spherity.github.io/vc-status-2021-ldap#query">https://spherity.github.io/vc-status-2021-ldap#query</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="params">
+          <h3>Params</h3>
+          <p>
+            The <code>params</code> property MUST be input params for
+            <a>credentialStatus.params</a> query.
+          </p>
+
+          <table class="simple">
+            <tbody>
+            <tr>
+              <td>
+                <a href="https://json-ld.org/spec/latest/json-ld/#dfn-terms">Term</a>
+              </td>
+              <td>
+                <a href="https://spherity.github.io/vc-status-2021-ldap#params">params</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="https://json-ld.org/spec/latest/json-ld/#dfn-iris">Full IRI</a>
+              </td>
+              <td>
+                <a href="https://spherity.github.io/vc-status-2021-ldap#params">https://spherity.github.io/vc-status-2021-ldap#params</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </section>
+
       </section>
-
     </section>
 
   <section class="normative">
     <h2>Algorithms</h2>
 
     <p>
-      The following section outlines the algorithms that are used to initialize, 
+      The following section outlines the algorithms that are used to initialize,
       revoke and validate revocation status as described by this document.
     </p>
 
@@ -390,28 +398,28 @@ ol.algorithm li:before {
       <h3>Initialization Algorithm</h3>
 
       <p>
-        This process MUST be followed to define LDAP URL parts for identifying 
-        a location for a potential revocation status record per each <a>verifiable 
-        credential</a> that includes <a>RevocationStatus2021LDAP</a> method as 
-        value for its <a>credentialStatus.type</a> property, and thus relies on 
+        This process MUST be followed to define LDAP URL parts for identifying
+        a location for a potential revocation status record per each <a>verifiable
+        credential</a> that includes <a>RevocationStatus2021LDAP</a> method as
+        value for its <a>credentialStatus.type</a> property, and thus relies on
         an underlying <a>directory service</a> to store revocation information.
       </p>
 
       <ol class="algorithm">
         <li>
-          Define parts of LDAP URL to a resource at <a>directory service</a> 
-          that MAY resolve to an array of results to describe the revocation status 
-          for the <a>verifiable credential</a> in question. 
-          LDAP URL parts MUST include following properties <a>ssl</a>, <a>host</a>, 
+          Define parts of LDAP URL to a resource at <a>directory service</a>
+          that MAY resolve to an array of results to describe the revocation status
+          for the <a>verifiable credential</a> in question.
+          LDAP URL parts MUST include following properties <a>ssl</a>, <a>host</a>,
           <a>query</a> and <a>params</a>.
         </li>
         <li>
-          Securely combine aforementioned LDAP URL parts to construct a fully 
-          qualified LDAP URL value and apply its value to <a>credentialStatus.id</a> 
+          Securely combine aforementioned LDAP URL parts to construct a fully
+          qualified LDAP URL value and apply its value to <a>credentialStatus.id</a>
           property.
         </li>
         <li>
-          Apply aforementioned LDAP URL parts as values to respective properties within 
+          Apply aforementioned LDAP URL parts as values to respective properties within
           <a>credentialStatus</a> section.
         </li>
       </ol>
@@ -423,20 +431,20 @@ ol.algorithm li:before {
       <p>
         This process MUST be followed to execute revocation per each
         <a>verifiable credential</a> that includes <a>RevocationStatus2021LDAP</a>
-        method as value for its <a>credentialStatus.type</a> property, and thus 
-        relies on an underlying <a>directory service</a> to store revocation 
+        method as value for its <a>credentialStatus.type</a> property, and thus
+        relies on an underlying <a>directory service</a> to store revocation
         information.
       </p>
 
       <ol class="algorithm">
         <li>
-          Create a revocation status record at the location defined by LDAP URL 
-          parts described inside <a>credentialStatus</a> section of a given 
+          Create a revocation status record at the location defined by LDAP URL
+          parts described inside <a>credentialStatus</a> section of a given
           <a>verifiable credential</a>.
           The record MAY include a <a>description</a> property.
           The record MAY also include a <a>date</a> property.
-          The value of the <a>date</a> property MUST be ISO string or UNIX 
-          timestamp in milliseconds. ISO string format is suggested due to its 
+          The value of the <a>date</a> property MUST be ISO string or UNIX
+          timestamp in milliseconds. ISO string format is suggested due to its
           readability.
         </li>
       </ol>
@@ -447,9 +455,9 @@ ol.algorithm li:before {
       <h3>Validation Algorithm</h3>
 
       <p>
-        This process MUST be followed to identify revocation status of 
+        This process MUST be followed to identify revocation status of
         <a>verifiable credential</a> that includes <a>RevocationStatus2021LDAP</a>
-        method as value for its <a>credentialStatus.type</a> property. This 
+        method as value for its <a>credentialStatus.type</a> property. This
         identifies it as relying on underlying LDAP <a>directory service</a>.
       </p>
 
@@ -464,18 +472,18 @@ ol.algorithm li:before {
         <li>
           Evaluate results of LDAP search operation.
           <br>
-          <br>In case error code <a>32</a> (not found) is thrown, then the status 
-          of a <a>verifiable credential</a> should be considered as not rovoked. 
+          <br>In case error code <a>32</a> (not found) is thrown, then the status
+          of a <a>verifiable credential</a> should be considered as not rovoked.
           <br>
-          <br>In case LDAP search operation results are recieved, then the status 
+          <br>In case LDAP search operation results are recieved, then the status
           of a <a>verifiable credential</a> should be considered as revoked.
           <br>
           <br>If present, LDAP search results MAY include an object with
-          <a>description</a> property. If present, <a>description</a> property 
+          <a>description</a> property. If present, <a>description</a> property
           MUST be a string.
           <br>
-          <br>If present, LDAP search results MAY include an object with 
-          <a>date</a> property. If present, <a>date</a> property MUST be a date 
+          <br>If present, LDAP search results MAY include an object with
+          <a>date</a> property. If present, <a>date</a> property MUST be a date
           as ISO-formatted string or UNIX Epoch milliseconds as number.
         </li>
       </ol>
@@ -503,7 +511,7 @@ ol.algorithm li:before {
         credential is assumed to be "authoritative" over other or older records,
         which this method is not optimized to minimize.
       </p>
-       
+
       <p>
         Referencing the <a>verifiable credential</a>'s unique ID in the LDAP
         query string adds additional correlation risk, which may be an
@@ -529,14 +537,14 @@ ol.algorithm li:before {
       advice of security and cryptography professionals when implementing mission
       critical systems using the technology outlined in this specification.
     </p>
- 
+
     <p>
       Our architecture assumes keys are managed in common across both issuance
       and status-publication infrastructure. The latter is assumed to be secured
       by LDAPS; LDAP-specific security is assumed and largely out of scope of
       this specification, although LDAP queries are stored in the credential in
       both composed and decomposed form to assure validation and comparison to
-      better secure queries. 
+      better secure queries.
     </p>
 
     <p>
