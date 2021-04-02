@@ -126,13 +126,13 @@
     <section class="informative">
       <h2>Process Flow</h2>
 
-        Here we describe the assumptions in this usage of an underlying <a>directory
-        service</a>, which leverages <a>LDAP</a> to obtain records of revocation
-        status for a given <a>verifiable credential</a>.
+        Here we describe the assumptions in this usage of an underlying directory
+      service, which leverages LDAP to obtain records of revocation
+        status for a given verifiable credential.
         <br>
         <br>
-        First of all, entire <a>verifiable credentials</a> issued by an <a>issuer</a>
-        are not assumed to be recorded in <a>directory service</a> by default.
+        First of all, entire verifiable credentials issued by an issuer
+        are not assumed to be recorded in directory service by default.
         Some subset of information, however, need to be retained for revocation to be
         executed later, i.e. the pointer to where a revocation record will be posted
         if that credential is revoked later. This record can contain more or less
@@ -145,10 +145,10 @@
         can be be securely and deterministically constructed via the following list of
         properties of a verifiable credential:
         <ul>
-          <li><a>credentialStatus.ssl</a></li>
-          <li><a>credentialStatus.host</a></li>
-          <li><a>credentialStatus.query</a></li>
-          <li><a>credentialStatus.params</a></li>
+          <li>credentialStatus.ssl</li>
+          <li>credentialStatus.host</li>
+          <li>credentialStatus.query</li>
+          <li>credentialStatus.params</li>
         </ul>
         If a record is returned by the query assembled from these variables, thereafter,
         this verifiable credential should be considered as revoked and any additional
@@ -174,8 +174,8 @@
       <section id="RevocationStatus2021LDAP">
         <h2>RevocationStatus2021LDAP</h2>
         <p>
-          When an <a>issuer</a> desires to enable revocation for a
-          <a>verifiable credential</a>, they MAY add a <code>status</code>
+          When an issuer desires to enable revocation for a
+          verifiable credential, they MAY add a <code>status</code>
           property that uses the data model described in this specification.
         </p>
 
@@ -268,7 +268,7 @@
             present or it MAY be skipped that should be treated the
             same as like <code>false</code> value was provided.
             In case <code>true</code> value is provided then
-            <a>ldaps</a> protocol will be applied, otherwise - <a>ldap</a>.
+            ldaps protocol will be applied, otherwise - ldap.
           </p>
 
           <table class="simple">
@@ -327,9 +327,9 @@
           <h3>Query</h3>
           <p>
             The <code>query</code> property MUST a be a valid LDAP search
-            query for the <a>verifiable credential</a> revocation status
+            query for the verifiable credential revocation status
             location. Numbers that are present inside brackets identify
-            indexes of respective values from <a>credentialStatus.params</a>
+            indexes of respective values from credentialStatus.params
             params array.
           </p>
 
@@ -359,7 +359,7 @@
           <h3>Params</h3>
           <p>
             The <code>params</code> property MUST be input params for
-            <a>credentialStatus.params</a> query.
+            credentialStatus.params query.
           </p>
 
           <table class="simple">
@@ -400,28 +400,28 @@
 
       <p>
         This process MUST be followed to define LDAP URL parts for identifying
-        a location for a potential revocation status record per each <a>verifiable
-        credential</a> that includes <a>RevocationStatus2021LDAP</a> method as
-        value for its <a>credentialStatus.type</a> property, and thus relies on
-        an underlying <a>directory service</a> to store revocation information.
+        a location for a potential revocation status record per each verifiable
+        credential that includes RevocationStatus2021LDAP method as
+        value for its credentialStatus.type property, and thus relies on
+        an underlying directory service to store revocation information.
       </p>
 
       <ol class="algorithm">
         <li>
-          Define parts of LDAP URL to a resource at <a>directory service</a>
+          Define parts of LDAP URL to a resource at directory service
           that MAY resolve to an array of results to describe the revocation status
-          for the <a>verifiable credential</a> in question.
-          LDAP URL parts MUST include following properties <a>ssl</a>, <a>host</a>,
-          <a>query</a> and <a>params</a>.
+          for the verifiable credential in question.
+          LDAP URL parts MUST include following properties ssl, host,
+          query and params.
         </li>
         <li>
           Securely combine aforementioned LDAP URL parts to construct a fully
-          qualified LDAP URL value and apply its value to <a>credentialStatus.id</a>
+          qualified LDAP URL value and apply its value to credentialStatus.id
           property.
         </li>
         <li>
           Apply aforementioned LDAP URL parts as values to respective properties within
-          <a>credentialStatus</a> section.
+          credentialStatus section.
         </li>
       </ol>
     </section>
@@ -431,20 +431,20 @@
 
       <p>
         This process MUST be followed to execute revocation per each
-        <a>verifiable credential</a> that includes <a>RevocationStatus2021LDAP</a>
-        method as value for its <a>credentialStatus.type</a> property, and thus
-        relies on an underlying <a>directory service</a> to store revocation
+        verifiable credential that includes RevocationStatus2021LDAP
+        method as value for its credentialStatus.type property, and thus
+        relies on an underlying directory service to store revocation
         information.
       </p>
 
       <ol class="algorithm">
         <li>
           Create a revocation status record at the location defined by LDAP URL
-          parts described inside <a>credentialStatus</a> section of a given
-          <a>verifiable credential</a>.
-          The record MAY include a <a>description</a> property.
-          The record MAY also include a <a>date</a> property.
-          The value of the <a>date</a> property MUST be ISO string or UNIX
+          parts described inside credentialStatus section of a given
+          verifiable credential.
+          The record MAY include a description property.
+          The record MAY also include a date property.
+          The value of the date property MUST be ISO string or UNIX
           timestamp in milliseconds. ISO string format is suggested due to its
           readability.
         </li>
@@ -457,15 +457,15 @@
 
       <p>
         This process MUST be followed to identify revocation status of
-        <a>verifiable credential</a> that includes <a>RevocationStatus2021LDAP</a>
-        method as value for its <a>credentialStatus.type</a> property. This
-        identifies it as relying on underlying LDAP <a>directory service</a>.
+        verifiable credential that includes RevocationStatus2021LDAP
+        method as value for its credentialStatus.type property. This
+        identifies it as relying on underlying LDAP directory service.
       </p>
 
       <ol class="algorithm">
         <li>
           Build a fully qualified LDAP URL by securely combining properties
-          from <a>credentialStatus</a> section of a <a>verifiable credential</a>.
+          from credentialStatus section of a verifiable credential.
         </li>
         <li>
           Execute LDAP search operation using LDAP URL.
@@ -473,18 +473,18 @@
         <li>
           Evaluate results of LDAP search operation.
           <br>
-          <br>In case error code <a>32</a> (not found) is thrown, then the status
-          of a <a>verifiable credential</a> should be considered as not rovoked.
+          <br>In case error code 32 (not found) is thrown, then the status
+          of a verifiable credential should be considered as not rovoked.
           <br>
           <br>In case LDAP search operation results are recieved, then the status
-          of a <a>verifiable credential</a> should be considered as revoked.
+          of a verifiable credential should be considered as revoked.
           <br>
           <br>If present, LDAP search results MAY include an object with
-          <a>description</a> property. If present, <a>description</a> property
+          description property. If present, description property
           MUST be a string.
           <br>
           <br>If present, LDAP search results MAY include an object with
-          <a>date</a> property. If present, <a>date</a> property MUST be a date
+          date property. If present, date property MUST be a date
           as ISO-formatted string or UNIX Epoch milliseconds as number.
         </li>
       </ol>
@@ -514,7 +514,7 @@
       </p>
 
       <p>
-        Referencing the <a>verifiable credential</a>'s unique ID in the LDAP
+        Referencing the verifiable credential's unique ID in the LDAP
         query string adds additional correlation risk, which may be an
         anti-pattern in some use cases.
       </p>
