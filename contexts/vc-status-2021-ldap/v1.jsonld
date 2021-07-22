@@ -16,10 +16,10 @@
         "ssl": {
           "@id": "https://spherity.github.io/vc-status-2021-ldap#ssl"
         },
-        "legalName": {
+        "host": {
           "@id": "https://spherity.github.io/vc-status-2021-ldap#host"
         },
-        "address": {
+        "query": {
           "@id": "https://spherity.github.io/vc-status-2021-ldap#query"
         },
         "params": {
